@@ -13,7 +13,7 @@ admin interface, with support for multiple languages.
 History
 -------
 
-The questionnaire app was originally developed by [Seantis](https://github.com/seantis], itself derived from [rmt](https://github.com/rmt). We picked up the project because we had been using it and the Seantis version had entered a steady state of development. There are several feature changes we wanted & decided to head up the maintenance ourselves.
+The questionnaire app was originally developed by [Seantis](https://github.com/seantis), itself derived from [rmt](https://github.com/rmt). We picked up the project because we had been using it and the Seantis version had entered a steady state of development. There are several feature changes we wanted & decided to head up the maintenance ourselves.
 
 The old versions are tagged as follows:
 
