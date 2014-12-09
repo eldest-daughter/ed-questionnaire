@@ -1004,12 +1004,13 @@ def dep_check(expr, runinfo, answerdict):
             return actual_answer < check_value
         if check_answer.startswith(">"):
             return actual_answer > check_value
+    if type(actual_answer) == type(list()):
+        actual_answer = actual_answer[0]
     if check_answer.startswith("!"):
         if actual_answer == '':
             return False
         return check_answer[1:].strip() != actual_answer.strip()
-    if type(actual_answer) == type(list()):
-        actual_answer = actual_answer[0]
+
     return check_answer.strip() == actual_answer.strip()
 
 
