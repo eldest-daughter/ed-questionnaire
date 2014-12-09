@@ -1,73 +1,38 @@
-Seantis Questionnaire
+ED Questionnaire
 =====================
 
 Introduction
 ------------
 
-Seantis Questionnaire is a django questionnaire app which is easily customised
+ED Questionnaire is a django questionnaire app which is easily customised
 and includes advanced dependency support using boolean expressions.
 
 It allows an administrator to create and edit questionnaires in the django
 admin interface, with support for multiple languages.
 
-It was originally created to support an annually recurring questionnnaire for a
-medical study.
-
-This repository only contains the Questionnaire side of the application.  We
-also developed a management interface and extensions to the models that are
-specific to the study, and have therefore not been made public.  Seantis GmbH
-could, however, provide a similar end-to-end solution for your organisation.
-
-The State of Seantis Questionnaire
-----------------------------------
-
-Seantis Questionnaire was developed a couple of years ago and it serves us
-well on some of our older projects. That being said, we currently have no
-plans to further develop these projects or Seantis Questionnaire itself.
-
-What we do is review pull requests to the best of our abilities and merge
-them, as long as they come in digestable portions. There is still a fair
-amount of pull requests coming in, so we wouldn't consider Seantis 
-Questionnaire dead just yet, but be warned that this project won't see
-big new developments any time soon.
-
-That also means that things might break, since there are barely any tests
-and no continuous integration. You should factor this into your decision
-when looking at Seantis Questionnaire for a new project.
-
-Alternatives
-------------
-
-There are two other questionnaire-type applications that we stumbled upon, but
-they both didn't quite scratch our itch, but they may scratch yours.
-
-Django Survey (slightly outdated, last change 2009) - [django-survey](http://code.google.com/p/django-survey/)
-
 History
 -------
 
-The questionnaire app was originally developed by [rmt](https://github.com/rmt) for Seantis. We picked up the project again in 2011 for yet another medical study. At this point we decided to introduce features and changes that break backwards compatibility with existing questionnaires that use this app.
+The questionnaire app was originally developed by [Seantis](https://github.com/seantis], itself derived from [rmt](https://github.com/rmt). We picked up the project because we had been using it and the Seantis version had entered a steady state of development. There are several feature changes we wanted & decided to head up the maintenance ourselves.
 
 The old versions are tagged as follows:
 
  * tag 1.0 - state of last commit by the original developer (rmt)
- * tag 1.1 - contains merged changes by other forks improving the orignal
+ * tag 1.1 - contains merged changes by other forks improving the original
+ * tag 2.0 - original updated trunk from Seantis version.
+ * tag 2.5 - contains the original Seantis version & all PRs merged in as of 12/09/15. It's considered to be the backwards compatible version of the repository.
 
-The new version is the current trunk and is dubbed v2.0.
-
-It is still possible to use a questionnaire defined for 1.0 and use it in 2.0 and we cover that topic later in this manual. However, if you used 1.0 and integrated it into your own page you are on your own. We only cover data-migration from an existing questionnaire 1.0 instance to a new questionnaire 2.0 instance.
-
-A lot of template code has changed from 1.0 to 2.0 because we switched from the blueprint CSS framework to the Twitter bootstrap CSS framework. There is also some cleanup around the urls and static files. That's why moving to 2.0 might be a somewhat hairy task to accomplish.
+The new version is the current trunk and is dubbed v3.0.
 
 About this Manual
 -----------------
 
-Seantis Questionnaire is not a very well documented app so far to say the least. This manual should give you a general idea of the layout and concepts of it, but it is not as comprehensive as it should be.
+ED Questionnaire is not a very well documented app so far to say the least. This manual should give you a general idea of the layout and concepts of it, but it is not as comprehensive as it should be.
 
 What it does cover is the following:
 
  * **Integration** talks lays out the steps needed to create a new Django page together with the questionnaire. The same steps can be used to integrate the questionnaire into an existing site (though you would be entering unpaved ways).
- * **Conecpts** talks about the data model and the design of the application.
+ * **Concepts** talks about the data model and the design of the application.
  * **Migration** explains how a questionnaire defined with 1.0 can be used in 2.0.
  * **2.0 Postmortem** talks about some experiences made during the development of 2.0.
 
@@ -105,17 +70,17 @@ Create a place for the questionnare
 
 Clone the questionnaire source
 
-    git clone git://github.com/seantis/seantis-questionnaire.git
+    git clone git://github.com/eldest-daughter/ed-questionnaire.git
 
-You should now have a seantis-questionnaire folder in your apps folder
+You should now have a ed-questionnaire folder in your apps folder
 
-    cd seantis-questionnaire
+    cd ed-questionnaire
 
 The next step is to install the questionnaire.
 
     python setup.py install
 
-If you are working with seantis-questionnaire from your own fork you may want to use `python setup.py develop` instead, which will save you from running `python setup.py install` every time the questionnaire changes
+If you are working with ed-questionnaire from your own fork you may want to use `python setup.py develop` instead, which will save you from running `python setup.py install` every time the questionnaire changes
 
 Next up we'll have a look at configuring your basic questionnaire.
 
@@ -136,7 +101,7 @@ We will use that below for the setup of the folders
 
 In the same file add the questionnaire static directory to your STATICFILES_DIRS
 
-    os.path.abspath('./apps/seantis-questionnaire/questionnaire/static/')
+    os.path.abspath('./apps/ed-questionnaire/questionnaire/static/')
 
 Also add the locale and request cache middleware to MIDDLEWARE_CLASSES
 
@@ -145,7 +110,7 @@ Also add the locale and request cache middleware to MIDDLEWARE_CLASSES
 
 Add the questionnaire template dir as well as your own to TEMPLATE_DIRS
 
-    os.path.abspath('./apps/seantis-questionnaire/questionnaire/templates'),
+    os.path.abspath('./apps/ed-questionnaire/questionnaire/templates'),
     os.path.abspath('./templates'),
 
 And finally, add transmeta, questionnaire to your INSTALLED_APPS
@@ -187,19 +152,19 @@ Having done that we can initialize our database. For this to work you must have 
 
     python manage.py syncdb
 
-The questionnaire expectes a base.html template to be there, with certain stylesheets and blocks inside. Have a look at `./apps/seantis-questionnaire/example/templates/base.html`
+The questionnaire expectes a base.html template to be there, with certain stylesheets and blocks inside. Have a look at `./apps/ed-questionnaire/example/templates/base.html`
 
 For now you might want to just copy the base.html to your own template folder.
 
     mkdir templates
     cd templates
-    cp ../apps/seantis-questionnaire/example/templates/base.html .
+    cp ../apps/ed-questionnaire/example/templates/base.html .
 
 Congratulations, you have setup the basics of the questionnaire! At this point this site doesn't really do anything, as there are no questionnaires defined.
 
 To see an example questionnaire you can do the following (unfortunately, this will only work if you have both English and German defined as Languages in settings.py)
 
-    python manage.py loaddata ./apps/seantis-questionnaire/example/fixtures/initial_data.yaml
+    python manage.py loaddata ./apps/ed-questionnaire/example/fixtures/initial_data.yaml
 
 You may then start your development server
 
@@ -210,7 +175,7 @@ And navigate your browser to `localhost:8000`
 Concepts
 --------
 
-The Seantis Questionnaire sports the following tables, described in detail below.
+The ED Questionnaire sports the following tables, described in detail below.
 
  * Subject
  * RunInfo
@@ -233,7 +198,7 @@ Of course, not every questionnaire is part of a study. Sometimes you just want t
 
 *(it's pirates!)
 
-Though a poll would be a better choice for this example, one can find the answer to that question with Seantis Questionnaire by using an anonymous subject. The next chapter *Questionnaire* will talk about that in more detail.
+Though a poll would be a better choice for this example, one can find the answer to that question with ED Questionnaire by using an anonymous subject. The next chapter *Questionnaire* will talk about that in more detail.
 
 ### RunInfo
 
@@ -344,7 +309,7 @@ This of course covers only the data migration. How to migrate your custom tailor
 
 Here's what we think we learned:
 
-### Seantis.questionnaire is a Framework
+### ED.questionnaire is a Framework
 
 More than anything else seantis.questionnaire should be thought of as a framework. Your site has to provide and do certain things for the questionnaire to work. If your site is a customized questionnaire for a company with other needs on the same site you will end up integrating code which will call questionnaire to setup runs and you will probably work through the answer records to provide some sort of summary. 
 
