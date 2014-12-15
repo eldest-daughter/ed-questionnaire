@@ -6,14 +6,14 @@ def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(
-    name="seantis-questionnaire",
+    name="ed-questionnaire",
     version="2.0.1",
     description="A Django application for creating online questionnaires/surveys.",
     long_description=read("README.md"),
-    author="Seantis GmbH",
-    author_email="info@seantis.ch",
+    author="Eldest Daughter, LLC.",
+    author_email="gcaprio@eldestdaughter.com",
     license="BSD",
-    url="https://github.com/seantis/seantis-questionnaire",
+    url="https://github.com/eldest-daughter/ed-questionnaire",
     packages=find_packages(exclude=["example"]),
     include_package_data=True,
     classifiers=[

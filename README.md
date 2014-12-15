@@ -311,7 +311,7 @@ Here's what we think we learned:
 
 ### ED.questionnaire is a Framework
 
-More than anything else seantis.questionnaire should be thought of as a framework. Your site has to provide and do certain things for the questionnaire to work. If your site is a customized questionnaire for a company with other needs on the same site you will end up integrating code which will call questionnaire to setup runs and you will probably work through the answer records to provide some sort of summary. 
+More than anything else ed.questionnaire should be thought of as a framework. Your site has to provide and do certain things for the questionnaire to work. If your site is a customized questionnaire for a company with other needs on the same site you will end up integrating code which will call questionnaire to setup runs and you will probably work through the answer records to provide some sort of summary.
 
 If it was a library you could just work with a nice API, which does not exist.
 
