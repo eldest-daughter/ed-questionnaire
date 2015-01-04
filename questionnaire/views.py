@@ -303,10 +303,10 @@ def redirect_to_prev_questionnaire(request):
     return HttpResponseRedirect('/')
 
 
-@transaction.atomic
+@transaction.commit_on_success
 def questionnaire(request, runcode=None, qs=None):
     """
-    Process submitted answers (if present) and redirect to next page
+    Process submit answers (if present) and redirect to next page
 
     If this is a POST request, parse the submitted data in order to store
     all the submitted answers.  Then return to the next questionset or
