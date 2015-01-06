@@ -22,7 +22,7 @@ The old versions are tagged as follows:
  * tag 2.0 - original updated trunk from Seantis version.
  * tag 2.5 - contains the original Seantis version & all PRs merged in as of 12/09/15. It's considered to be the backwards compatible version of the repository.
 
-The new version is the current trunk and is dubbed v3.0.
+The new version is the current trunk and is dubbed v3.0. v3.0 should be considered a new project & thus will contain backwards incompatible changes. When possible, we'll try and backport fixes to the v2.x branches, but it will not be a priority.
 
 About this Manual
 -----------------
