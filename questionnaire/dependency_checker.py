@@ -3,8 +3,7 @@ import logging
 
 
 def check_actual_answers_against_expression(check_answer, actual_answer, check_question):
-
-   # Numeric Value Expressions
+    # Numeric Value Expressions
     if check_answer[0:1] in "<>":
         try:
             actual_answer = float(actual_answer)
@@ -35,14 +34,13 @@ def check_actual_answers_against_expression(check_answer, actual_answer, check_q
                 return False
             if check_answer[1:].strip() == actual_answer.strip():
                 return False
-            return True
-        return
+        return True
 
     # Positive Value Expressions
     for actual_answer in actual_answer:
         if check_answer.strip() == actual_answer.strip():
             return True
-        return False
+    return False
 
 
 def dep_check(expr, runinfo, answerdict):
@@ -78,13 +76,13 @@ def dep_check(expr, runinfo, answerdict):
 
     # Parse expression
     if "," not in expr:
-        expr = expr + ",yes"
+        expr += ",yes"
 
-    check_questionnum, check_answer = expr.split(",", 1)
+    check_question_number, check_answer = expr.split(",", 1)
 
     # Get question to check
     try:
-        check_question = Question.objects.get(number=check_questionnum,
+        check_question = Question.objects.get(number=check_question_number,
                                               questionset__questionnaire=questionnaire)
     except Question.DoesNotExist:
         return False
@@ -102,15 +100,16 @@ def dep_check(expr, runinfo, answerdict):
             elif check_answer.strip() == v.strip():
                 return True
         actual_answer = answerdict[check_question].get('ANSWER', '')
-    elif hasattr(runinfo, 'get_cookie') and runinfo.get_cookie(check_questionnum, False):
-        actual_answer = runinfo.get_cookie(check_questionnum)
+    elif hasattr(runinfo, 'get_cookie') and runinfo.get_cookie(check_question_number, False):
+        actual_answer = runinfo.get_cookie(check_question_number)
     else:
         # retrieve from database
-        ansobj = Answer.objects.filter(question=check_question,
-                                       runid=runinfo.runid, subject=runinfo.subject)
-        if ansobj:
-            actual_answer = ansobj[0].split_answer()[0]
-            logging.warn("Put `store` in checks field for question %s" % check_questionnum)
+        answer_object = Answer.objects.filter(question=check_question,
+                                              runid=runinfo.runid,
+                                              subject=runinfo.subject)
+        if answer_object:
+            actual_answer = answer_object[0].split_answer()
+            logging.warn("Put `store` in checks field for question %s" % check_question_number)
         else:
             actual_answer = None
 
@@ -120,7 +119,10 @@ def dep_check(expr, runinfo, answerdict):
 
     if actual_answer is None:
         actual_answer = u''
+
+    # Convert freeform question type answers from a list of lists to just a single list.
+    # FIXME: Figure out why the hell freeform questions store their values as lists within lists.
     if type(actual_answer) == type(list()):
-       actual_answer = actual_answer[0]
+        actual_answer = actual_answer[0]
 
     return check_actual_answers_against_expression(check_answer, actual_answer, check_question)
