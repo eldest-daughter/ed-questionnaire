@@ -1,10 +1,20 @@
 from django.test import TestCase
 
-from dependency_checker import check_actual_answers_against_expression
+from dependency_checker import check_actual_answers_against_expression, explode_answer_into_list
 from .models import Question
 
 
 class QuestionSetTests(TestCase):
+    def test_exploding_answer_into_list(self):
+        answer = ['1A']
+        self.assertEqual(['1A'], explode_answer_into_list(answer))
+
+        answer = ['1A', ['foobar']]
+        self.assertEqual(['1A', 'foobar'], explode_answer_into_list(answer))
+
+        answer = ['1A', ['foobar', 'barfoo']]
+        self.assertEqual(['1A', 'foobar', 'barfoo'], explode_answer_into_list(answer))
+
     def test_dependencies_for_multiple_choice_question(self):
         check_question = Question()
         self.assertTrue(check_actual_answers_against_expression('3B', ['3B', '3E'], check_question))

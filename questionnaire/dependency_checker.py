@@ -2,6 +2,19 @@ from questionnaire.models import Question, Answer
 import logging
 
 
+def explode_answer_into_list(answers):
+    answer_list = []
+
+    for answer in answers:
+        if type(answer) == type(list()):
+            for list_answer in answer:
+                answer_list.append(list_answer)
+        else:
+            answer_list.append(answer)
+
+    return answer_list
+
+
 def check_actual_answers_against_expression(check_answer, actual_answer, check_question):
     # Numeric Value Expressions
     if check_answer[0:1] in "<>":
@@ -122,7 +135,6 @@ def dep_check(expr, runinfo, answerdict):
 
     # Convert freeform question type answers from a list of lists to just a single list.
     # FIXME: Figure out why the hell freeform questions store their values as lists within lists.
-    if type(actual_answer) == type(list()):
-        actual_answer = actual_answer[0]
+    answer_list = explode_answer_into_list(actual_answer)
 
-    return check_actual_answers_against_expression(check_answer, actual_answer, check_question)
+    return check_actual_answers_against_expression(check_answer, answer_list, check_question)
