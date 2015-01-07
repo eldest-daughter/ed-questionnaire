@@ -42,6 +42,8 @@ def check_actual_answers_against_expression(check_answer, actual_answer, check_q
 
     # Negative Value Expressions
     if check_answer.startswith("!"):
+        if len(actual_answer) == 0:
+            return False
         for actual_answer in actual_answer:
             if actual_answer == '':
                 return False
