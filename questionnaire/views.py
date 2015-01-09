@@ -33,6 +33,11 @@ try:
 except AttributeError:
     use_session = False
 
+try:
+    debug_questionnaire = settings.QUESTIONNAIRE_DEBUG
+except AttributeError:
+    debug_questionnaire = False
+
 
 def r2r(tpl, request, **contextdict):
     "Shortcut to use RequestContext instead of Context in templates"
@@ -522,13 +527,13 @@ def show_questionnaire(request, runinfo, errors={}):
     """
 
     request.runinfo = runinfo
+
     if request.GET.get('show_all') == '1':  # for debugging purposes.
         questions = runinfo.questionset.questionnaire.questions()
     else:
         questions = runinfo.questionset.questions()
 
-    show_all = request.GET.get(
-        'show_all') == '1'  # for debugging purposes in some cases we may want to show all questions on one screen.
+    show_all = request.GET.get('show_all') == '1'  # for debugging purposes in some cases we may want to show all questions on one screen.
     questionset = runinfo.questionset
     questions = questionset.questionnaire.questions() if show_all else questionset.questions()
 
@@ -619,10 +624,15 @@ def show_questionnaire(request, runinfo, errors={}):
                 else:
                     qvalues[s[1]] = v
 
+
     if use_session:
         prev_url = reverse('redirect_to_prev_questionnaire')
     else:
         prev_url = 'javascript:history.back();'
+
+    if debug_questionnaire:
+        current_answers = Answer.objects.filter(subject=runinfo.subject, runid=runinfo.runid).order_by('id')
+
     r = r2r("questionnaire/questionset.html", request,
             questionset=runinfo.questionset,
             runinfo=runinfo,
@@ -636,6 +646,7 @@ def show_questionnaire(request, runinfo, errors={}):
             async_progress=async_progress,
             async_url=reverse('progress', args=[runinfo.random]),
             prev_url=prev_url,
+            current_answers=current_answers,
     )
     r['Cache-Control'] = 'no-cache'
     r['Expires'] = "Thu, 24 Jan 1980 00:00:00 GMT"
