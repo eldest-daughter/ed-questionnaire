@@ -39,6 +39,21 @@
     </div>
     {% endif %}
 
+    {% if debug_questionnaire %}
+        Previous Answers:
+        {% for answer in current_answers %}
+            {% if forloop.first %}
+            <ul>
+            {% endif %}
+
+            <li>{{ answer.question }}: {{ answer.answer }}</li>
+
+            {% if forloop.last %}
+            </ul>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
     <div class="questionset-title">
     {{ questionset.text }}
     </div>
