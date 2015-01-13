@@ -39,20 +39,7 @@
     </div>
     {% endif %}
 
-    {% if debug_questionnaire %}
-        Previous Answers:
-        {% for answer in current_answers %}
-            {% if forloop.first %}
-            <ul>
-            {% endif %}
 
-            <li>{{ answer.question }}: {{ answer.answer }}</li>
-
-            {% if forloop.last %}
-            </ul>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
 
     <div class="questionset-title">
     {{ questionset.text }}
@@ -116,7 +103,20 @@
                 <a class="back-link pull-left" href="{{ prev_url }}">{% trans "return to previous page" %}</a>
             {% endif %}
     </form>
+    {% if debug_questionnaire %}
+        Previous Answers:
+        {% for answer in current_answers %}
+            {% if forloop.first %}
+            <ul>
+            {% endif %}
 
+            <li>{{ answer.question }}: {{ answer.answer }}</li>
+
+            {% if forloop.last %}
+            </ul>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
     <script type="text/javascript">
         {% for trigger in triggers %}
             addtrigger("{{trigger}}");
