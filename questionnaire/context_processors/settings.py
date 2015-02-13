@@ -18,6 +18,6 @@ def load_settings(request):
 
     context = {
         'debug_questionnaire': debug_questionnaire,
-        'use_sesison': use_session
+        'use_session': use_session
     }
     return context
