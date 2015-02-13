@@ -624,7 +624,6 @@ def show_questionnaire(request, runinfo, errors={}):
                 else:
                     qvalues[s[1]] = v
 
-
     if use_session:
         prev_url = reverse('redirect_to_prev_questionnaire')
     else:

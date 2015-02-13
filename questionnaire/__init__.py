@@ -9,23 +9,23 @@ Author: Robert Thomson <git AT corporatism.org>
 
 from django.conf import settings
 from django.dispatch import Signal
-import os, os.path
 import imp
 
-__all__ = [ 'question_proc', 'answer_proc', 'add_type', 'AnswerException',
-            'questionset_done', 'questionnaire_done', ]
+__all__ = ['question_proc', 'answer_proc', 'add_type', 'AnswerException',
+           'questionset_done', 'questionnaire_done', ]
 
 QuestionChoices = []
-QuestionProcessors = {} # supply additional information to the templates
-Processors = {} # for processing answers
+QuestionProcessors = {}  # supply additional information to the templates
+Processors = {}  # for processing answers
 
 questionnaire_start = Signal(providing_args=["runinfo", "questionnaire"])
 questionset_start = Signal(providing_args=["runinfo", "questionset"])
 questionset_done = Signal(providing_args=["runinfo", "questionset"])
 questionnaire_done = Signal(providing_args=["runinfo", "questionnaire"])
 
+
 class AnswerException(Exception):
-    "Thrown from an answer processor to generate an error message"
+    """Thrown from an answer processor to generate an error message"""
     pass
 
 
@@ -39,12 +39,15 @@ def question_proc(*names):
     def qproc_blah(request, question):
         ...
     """
+
     def decorator(func):
         global QuestionProcessors
         for name in names:
             QuestionProcessors[name] = func
         return func
+
     return decorator
+
 
 def answer_proc(*names):
     """
@@ -56,12 +59,15 @@ def answer_proc(*names):
     def qproc_blah(request, question):
         ...
     """
+
     def decorator(func):
         global Processors
         for name in names:
             Processors[name] = func
         return func
+
     return decorator
+
 
 def add_type(id, name):
     """
@@ -73,10 +79,10 @@ def add_type(id, name):
         add_type('mysupertype', 'My Super Type [radio]')
     """
     global QuestionChoices
-    QuestionChoices.append( (id, name) )
+    QuestionChoices.append((id, name))
 
 
-import questionnaire.qprocessors # make sure ours are imported first
+import questionnaire.qprocessors  # make sure ours are imported first
 
 add_type('sameas', 'Same as Another Question (put sameas=question.number in checks or sameasid=question.id)')
 
