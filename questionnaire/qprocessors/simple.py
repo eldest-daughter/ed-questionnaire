@@ -3,24 +3,6 @@ from django.utils.translation import ugettext as _
 from json import dumps
 
 
-@question_proc('comment')
-def question_comment(request, question):
-    key = "question_%s" % question.number
-    key2 = "question_%s_comment" % question.number
-
-    val = request.POST.get(key, None)
-    cmt = request.POST.get(key2, '')
-
-    return {
-        'required': True,
-        'value': val,
-        'qvalue': '',
-        'hascomment': True,
-        'comment': cmt,
-        'template': 'questionnaire/comment.html',
-    }
-
-
 @question_proc('choice-yesno', 'choice-yesnocomment', 'choice-yesnodontknow')
 def question_yesno(request, question):
     key = "question_%s" % question.number
