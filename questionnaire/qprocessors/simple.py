@@ -2,7 +2,26 @@ from questionnaire import *
 from django.utils.translation import ugettext as _
 from json import dumps
 
-@question_proc('choice-yesno','choice-yesnocomment','choice-yesnodontknow')
+
+@question_proc('comment')
+def question_comment(request, question):
+    key = "question_%s" % question.number
+    key2 = "question_%s_comment" % question.number
+
+    val = request.POST.get(key, None)
+    cmt = request.POST.get(key2, '')
+
+    return {
+        'required': True,
+        'value': val,
+        'qvalue': '',
+        'hascomment': True,
+        'comment': cmt,
+        'template': 'questionnaire/comment.html',
+    }
+
+
+@question_proc('choice-yesno', 'choice-yesnocomment', 'choice-yesnodontknow')
 def question_yesno(request, question):
     key = "question_%s" % question.number
     key2 = "question_%s_comment" % question.number
@@ -36,27 +55,29 @@ def question_yesno(request, question):
             checks = ' checks="dep_check(\'%s,dontknow\')"' % question.number
 
     return {
-        'required' : True,
-        'checks' : checks,
-        'value' : val,
-        'qvalue' : '',
-        'hascomment' : hascomment,
-        'hasdontknow' : hasdontknow,
-        'comment' : cmt,
-        'jstriggers' : jstriggers,
-        'template' : 'questionnaire/choice-yesnocomment.html',
+        'required': True,
+        'checks': checks,
+        'value': val,
+        'qvalue': '',
+        'hascomment': hascomment,
+        'hasdontknow': hasdontknow,
+        'comment': cmt,
+        'jstriggers': jstriggers,
+        'template': 'questionnaire/choice-yesnocomment.html',
     }
+
 
 @question_proc('open', 'open-textfield')
 def question_open(request, question):
     key = "question_%s" % question.number
-    value = question.getcheckdict().get('default','')
+    value = question.getcheckdict().get('default', '')
     if key in request.POST:
         value = request.POST[key]
     return {
-        'required' : question.getcheckdict().get('required', False),
-        'value' : value,
+        'required': question.getcheckdict().get('required', False),
+        'value': value,
     }
+
 
 @answer_proc('open', 'open-textfield', 'choice-yesno', 'choice-yesnocomment', 'choice-yesnodontknow')
 def process_simple(question, ansdict):
@@ -64,10 +85,10 @@ def process_simple(question, ansdict):
     ans = ansdict['ANSWER'] or ''
     qtype = question.get_type()
     if qtype.startswith('choice-yesno'):
-        if ans not in ('yes','no','dontknow'):
+        if ans not in ('yes', 'no', 'dontknow'):
             raise AnswerException(_(u'You must select an option'))
         if qtype == 'choice-yesnocomment' \
-        and len(ansdict.get('comment','').strip()) == 0:
+                and len(ansdict.get('comment', '').strip()) == 0:
             if checkdict.get('required', False):
                 raise AnswerException(_(u'Field cannot be blank'))
             if checkdict.get('required-yes', False) and ans == 'yes':
@@ -76,12 +97,14 @@ def process_simple(question, ansdict):
                 raise AnswerException(_(u'Field cannot be blank'))
     else:
         if not ans.strip() and checkdict.get('required', False):
-           raise AnswerException(_(u'Field cannot be blank'))
+            raise AnswerException(_(u'Field cannot be blank'))
     if ansdict.has_key('comment') and len(ansdict['comment']) > 0:
         return dumps([ans, [ansdict['comment']]])
     if ans:
         return dumps([ans])
     return dumps([])
+
+
 add_type('open', 'Open Answer, single line [input]')
 add_type('open-textfield', 'Open Answer, multi-line [textarea]')
 add_type('choice-yesno', 'Yes/No Choice [radio]')
@@ -92,6 +115,8 @@ add_type('choice-yesnodontknow', 'Yes/No/Don\'t know Choice [radio]')
 @answer_proc('comment')
 def process_comment(question, answer):
     pass
+
+
 add_type('comment', 'Comment Only')
 
 
