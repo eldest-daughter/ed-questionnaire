@@ -358,6 +358,10 @@ class Question(models.Model):
     def questioninclude(self):
         return "questionnaire/" + self.get_type() + ".html"
 
+    @property
+    def is_comment(self):
+        return self.type == 'comment'
+
 #     def __cmp__(a, b):
 #         anum, astr = split_numal(a.number)
 #         bnum, bstr = split_numal(b.number)
