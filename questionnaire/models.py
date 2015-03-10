@@ -89,6 +89,7 @@ class Questionnaire(models.Model):
             ("management", "Management Tools")
         )
 
+
 class QuestionSet(models.Model):
     __metaclass__ = TransMeta
 
@@ -105,7 +106,11 @@ class QuestionSet(models.Model):
             def numeric_number(val):
                 matches = re.findall(r'^\d+', val)
                 return int(matches[0]) if matches else 0
-            self.__qcache = sorted(Question.objects.filter(questionset=self.id), key=lambda q: (numeric_number(q.number), q.number))
+
+            questions_with_sort_id = sorted(Question.objects.filter(questionset=self.id).exclude(sort_id__isnull=True), key=lambda q: q.sort_id)
+
+            questions_with_out_sort_id = sorted(Question.objects.filter(questionset=self.id, sort_id__isnull=True), key=lambda q: (numeric_number(q.number), q.number))
+            self.__qcache = questions_with_sort_id + questions_with_out_sort_id
         return self.__qcache
 
     def next(self):
@@ -260,6 +265,7 @@ class RunInfoHistory(models.Model):
     class Meta:
         verbose_name_plural = 'Run Info History'
 
+
 class Question(models.Model):
     __metaclass__ = TransMeta
 
@@ -267,6 +273,7 @@ class Question(models.Model):
     number = models.CharField(max_length=8, help_text=
         "eg. <tt>1</tt>, <tt>2a</tt>, <tt>2b</tt>, <tt>3c</tt><br /> "
         "Number is also used for ordering questions.")
+    sort_id = models.IntegerField(null=True, blank=True, help_text="Questions within a questionset are sorted by sort order first, question number second")
     text = models.TextField(blank=True, verbose_name=_("Text"))
     type = models.CharField(u"Type of question", max_length=32,
         choices = QuestionChoices,
@@ -290,7 +297,6 @@ class Question(models.Model):
         "by joining them with the words <tt>and</tt> or <tt>or</tt>, "
         'eg. <tt>requiredif="Q1,A or Q2,B"</tt>')
     footer = models.TextField(u"Footer", help_text="Footer rendered below the question interpreted as textile", blank=True)
-
 
     def questionnaire(self):
         return self.questionset.questionnaire
