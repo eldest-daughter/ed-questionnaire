@@ -629,6 +629,7 @@ def show_questionnaire(request, runinfo, errors={}):
     else:
         prev_url = 'javascript:history.back();'
 
+    current_answers = []
     if debug_questionnaire:
         current_answers = Answer.objects.filter(subject=runinfo.subject, runid=runinfo.runid).order_by('id')
 
