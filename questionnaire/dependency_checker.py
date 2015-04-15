@@ -42,13 +42,11 @@ def check_actual_answers_against_expression(check_answer, actual_answer, check_q
 
     # Negative Value Expressions
     if check_answer.startswith("!"):
-        # Client has not been asked question, so a negative expression is moot.
         if len(actual_answer) == 0:
             return False
         for actual_answer in actual_answer:
-            # Client has not been asked question, so a negative expression is moot.
             if actual_answer == '':
-                return True
+                return False
             if check_answer[1:].strip() == actual_answer.strip():
                 return False
         return True
