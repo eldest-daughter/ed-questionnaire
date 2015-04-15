@@ -40,8 +40,8 @@ class QuestionSetTests(TestCase):
         self.assertTrue(check_actual_answers_against_expression('3B', '3B', check_question))
         self.assertFalse(check_actual_answers_against_expression('3C', '3B', check_question))
         self.assertTrue(check_actual_answers_against_expression('!3C', '3B', check_question))
-        self.assertTrue(check_actual_answers_against_expression('!3C', '', check_question))
-        self.assertTrue(check_actual_answers_against_expression('!3C', [''], check_question))
+        self.assertFalse(check_actual_answers_against_expression('!3C', '', check_question))
+        self.assertFalse(check_actual_answers_against_expression('!3C', [''], check_question))
 
     def test_dependencies_for_numeric_checks(self):
         check_question = Question()
