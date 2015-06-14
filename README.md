@@ -101,9 +101,10 @@ We will use that below for the setup of the folders.
 
 In the same file add the questionnaire static directory to your STATICFILES_DIRS:
 
-   STATICFILES_DIRS = (
+`   STATICFILES_DIRS = (
     os.path.abspath('./apps/ed-questionnaire/questionnaire/static/'),
    )
+`
 
 Also add the locale and request cache middleware to MIDDLEWARE_CLASSES:
 
