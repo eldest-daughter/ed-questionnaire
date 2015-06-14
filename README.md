@@ -101,10 +101,9 @@ We will use that below for the setup of the folders.
 
 In the same file add the questionnaire static directory to your STATICFILES_DIRS:
 
-`   STATICFILES_DIRS = (
+    STATICFILES_DIRS = (
     os.path.abspath('./apps/ed-questionnaire/questionnaire/static/'),
-   )
-`
+    )
 
 Also add the locale and request cache middleware to MIDDLEWARE_CLASSES:
 
@@ -176,7 +175,7 @@ You may then start your development server:
 
     python manage.py runserver
 
-And navigate to [`localhost:8000`](localhost:8000).
+And navigate to [localhost:8000](http://localhost:8000/).
 
 Concepts
 --------
