@@ -82,18 +82,18 @@ The next step is to install the questionnaire.
 
 If you are working with ed-questionnaire from your own fork you may want to use `python setup.py develop` instead, which will save you from running `python setup.py install` every time the questionnaire changes.
 
-Next up we'll have a look at configuring your basic questionnaire.
+Now let's configure your basic questionnaire.
 
-First, you want to setup the languages used in your questionnaire, by opening settings.py in your site's folder (the one with the subfoler `apps/`).
+First, you want to setup the languages used in your questionnaire. Open up your `mysite` folder in your favorite text editor.
 
-Open settings.py and add following lines, representing your languages of choice:
+Open `mysite/mysite/settings.py` and add following lines, representing your languages of choice:
 
     LANGUAGES = (
         ('en', 'English'),
         ('de', 'Deutsch')
     )
 
-At the top of settings.py you should at this point add
+At the top of `settings.py` you should at this point add:
 
     import os.path
 
@@ -101,14 +101,16 @@ We will use that below for the setup of the folders.
 
 In the same file add the questionnaire static directory to your STATICFILES_DIRS:
 
-    os.path.abspath('./apps/ed-questionnaire/questionnaire/static/')
+    STATICFILES_DIRS = (
+    os.path.abspath('./apps/ed-questionnaire/questionnaire/static/'),
+    )
 
 Also add the locale and request cache middleware to MIDDLEWARE_CLASSES:
 
     'django.middleware.locale.LocaleMiddleware',
     'questionnaire.request_cache.RequestCacheMiddleware',
 
-Add the questionnaire template dir as well as your own to TEMPLATE_DIRS:
+Add the questionnaire template directory as well as your own to TEMPLATE_DIRS:
 
     os.path.abspath('./apps/ed-questionnaire/questionnaire/templates'),
     os.path.abspath('./templates'),
@@ -122,11 +124,11 @@ And finally, add `transmeta`, `questionnaire` to your INSTALLED_APPS:
 
 To get the "sites" framework working you also need to add the following setting:
 
-    SITE = 1
+    SITE_ID = 1
 
-Next up we want to edit the urls.py of your project to link the questionnaire views to your site's url configuration.
+Next up we want to edit the `urls.py` file of your project to link the questionnaire views to your site's url configuration.
 
-For an empty site with enabled admin interface you should end up with something like this:
+For an empty site with enabled admin interface you add:
 
     from django.conf.urls import patterns, include, url
 
@@ -146,9 +148,14 @@ For an empty site with enabled admin interface you should end up with something 
         url(r'^setlang/$', 'questionnaire.views.set_language'),
     )
 
-Having done that we can initialize our database. (For this to work you must have setup your DATABASES in `settings.py`.)
+Having done that we can initialize our database. (For this to work you must have setup your DATABASES in `settings.py`.). First, in your CLI navigate back to the `mysite` folder:
+
+    cd ../..
+
+The check that you are in the proper folder, type `ls`: if you can see `manage.py` in your list of files, you are good. Otherwise, find your way to the folder that contains that file. Then type:
 
     python manage.py syncdb
+    python manage.py migrate
 
 The questionnaire expects a `base.html` template to be there, with certain stylesheets and blocks inside. Have a look at `./apps/ed-questionnaire/example/templates/base.html`.
 
@@ -160,7 +167,7 @@ For now you might want to just copy the `base.html` to your own template folder.
 
 Congratulations, you have setup the basics of the questionnaire! At this point this site doesn't really do anything, as there are no questionnaires defined.
 
-To see an example questionnaire you can do the following (unfortunately, this will only work if you have both English and German defined as Languages in `settings.py`):
+To see an example questionnaire you can do the following (Note: this will only work if you have both English and German defined as Languages in `settings.py`):
 
     python manage.py loaddata ./apps/ed-questionnaire/example/fixtures/initial_data.yaml
 
@@ -168,7 +175,7 @@ You may then start your development server:
 
     python manage.py runserver
 
-And navigate your browser to `localhost:8000`
+And navigate to [localhost:8000](http://localhost:8000/).
 
 Concepts
 --------
