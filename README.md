@@ -110,6 +110,10 @@ Also add the locale and request cache middleware to MIDDLEWARE_CLASSES:
     'django.middleware.locale.LocaleMiddleware',
     'questionnaire.request_cache.RequestCacheMiddleware',
 
+If you are using Django 1.7 you will need to comment out the following line, like so:
+    # 'django.middleware.security.SecurityMiddleware',
+otherwise you will get an error when trying to start the server.
+
 Add the questionnaire template directory as well as your own to TEMPLATE_DIRS:
 
     os.path.abspath('./apps/ed-questionnaire/questionnaire/templates'),
