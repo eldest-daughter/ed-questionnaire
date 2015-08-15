@@ -469,7 +469,7 @@ def questionnaire(request, runcode=None, qs=None):
 
     if len(errors) > 0:
         res = show_questionnaire(request, runinfo, errors=errors)
-        commit()
+        rollback()
         return res
 
     questionset_done.send(sender=None, runinfo=runinfo, questionset=questionset)
