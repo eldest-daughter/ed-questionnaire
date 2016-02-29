@@ -62,7 +62,7 @@ Create your Django site
 
     django-admin.py startproject mysite
 
-Create a place for the questionnare
+Create a place for the questionnaire
 
     cd mysite
     mkdir apps
