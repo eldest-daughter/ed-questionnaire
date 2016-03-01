@@ -167,7 +167,7 @@ For now you might want to just copy the `base.html` to your own template folder.
 
     mkdir templates
     cd templates
-    cp ../apps/ed-questionnaire/example/templates/base.html .
+    cp ./apps/ed-questionnaire/example/templates/base.html .
 
 Congratulations, you have setup the basics of the questionnaire! At this point this site doesn't really do anything, as there are no questionnaires defined.
 
