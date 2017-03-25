@@ -160,9 +160,11 @@ Having done that we can initialize our database. (For this to work you must have
 
 The check that you are in the proper folder, type `ls`: if you can see `manage.py` in your list of files, you are good. Otherwise, find your way to the folder that contains that file. Then type:
 
-    python manage.py makemigrations page
+```
     python manage.py makemigrations
+    python manage.py makemigrations page   # sometimes this seemed to need a specific call
     python manage.py migrate
+```
 
 The questionnaire expects a `base.html` template to be there, with certain stylesheets and blocks inside. Have a look at `./apps/ed-questionnaire/example/templates/base.html`.
 
