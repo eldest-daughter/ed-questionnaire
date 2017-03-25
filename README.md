@@ -48,7 +48,7 @@ First, create a folder for your new site:
 
 Create a virtual environment so your python packages don't influence your system
     
-    virtualenv --no-site-packages -p python2.5 .
+    virtualenv --no-site-packages -p python2.7 .
 
 Activate your virtual environment
 
