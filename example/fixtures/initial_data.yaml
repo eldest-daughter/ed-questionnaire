@@ -103,5 +103,5 @@
       \ take a sample questionnaire, \"go for it!\":/take/1\r\n\r\nUse the \"Admin\
       \ Interface\":/admin/, to change the questionnaire.", public: true, title_de: '',
     title_en: Welcome}
-  model: page.page
+  model: questionnaire.page
   pk: index

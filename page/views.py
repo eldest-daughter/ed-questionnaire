@@ -1,5 +1,5 @@
 # Create your views here.
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.conf import settings
 from django.template import RequestContext
 from django import http
@@ -12,9 +12,8 @@ def page(request, page_to_render):
     except Page.DoesNotExist:
         raise http.Http404('%s page requested but not found' % page_to_render)
     
-    return render_to_response("page.html", 
-            { "request" : request, "page" : p, }, 
-            context_instance = RequestContext(request) 
+    return render(request, "page.html", 
+            context={ "request" : request, "page" : p, }, 
         )
 
 def langpage(request, lang, page_to_trans):

@@ -6,7 +6,7 @@ class Page(models.Model):
     __metaclass__ = TransMeta
 
     slug = models.SlugField(unique=True, primary_key=True)
-    title = models.CharField(u"Title", max_length=256)
+    title = models.CharField(u"Title", max_length=255)
     body = models.TextField(u"Body")
     public = models.BooleanField(default=True)
 
@@ -14,8 +14,7 @@ class Page(models.Model):
         return u"Page[%s]" % self.slug
 
     def get_absolute_url(self):
-        return reverse('questionnaire.page.views.page', kwargs={'page_to_render':self.slug})
+        return reverse('page.views.page', kwargs={'page_to_render':self.slug})
         
-
     class Meta:
         translate = ('title','body',)
