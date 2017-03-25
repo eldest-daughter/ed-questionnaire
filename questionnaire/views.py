@@ -744,7 +744,6 @@ def export_csv(request, qid):  # questionnaire_id
     answers for all subjects.
     """
     import tempfile, unicodecsv, cStringIO, codecs
-    from django.core.servers.basehttp import FileWrapper
 
     questionnaire = get_object_or_404(Questionnaire, pk=int(qid))
     headings, answers = answer_export(questionnaire)
