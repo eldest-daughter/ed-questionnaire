@@ -54,9 +54,9 @@ Activate your virtual environment
 
     source bin/activate
 
-Install Django
+Install Django and other dependencies
 
-    pip install django
+    pip install django unicodecsv
 
 Create your Django site
 
