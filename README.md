@@ -110,16 +110,18 @@ Also add the locale and request cache middleware to MIDDLEWARE_CLASSES:
     'django.middleware.locale.LocaleMiddleware',
     'questionnaire.request_cache.RequestCacheMiddleware',
 
+Change MIDDLEWARE to MIDDLEWARE_CLASSES
+
 If you are using Django 1.7 you will need to comment out the following line, like so:
     # 'django.middleware.security.SecurityMiddleware',
 otherwise you will get an error when trying to start the server.
 
-Add the questionnaire template directory as well as your own to TEMPLATE_DIRS:
+Add the questionnaire template directory as well as your own to TEMPLATES[] DIRS[]:
 
     os.path.abspath('./apps/ed-questionnaire/questionnaire/templates'),
     os.path.abspath('./templates'),
 
-And finally, add `transmeta`, `questionnaire` to your INSTALLED_APPS:
+And finally, add to your INSTALLED_APPS:
 
     'django.contrib.sites',
     'transmeta',
@@ -134,23 +136,23 @@ Next up we want to edit the `urls.py` file of your project to link the questionn
 
 For an empty site with enabled admin interface you add:
 
-    from django.conf.urls import patterns, include, url
+    from django.conf.urls import include, url
 
     from django.contrib import admin
     admin.autodiscover()
 
-    urlpatterns = patterns('',
+    urlpatterns = [
         url(r'^admin/', include(admin.site.urls)),
         
         # questionnaire urls
         url(r'q/', include('questionnaire.urls')),
         
-        url(r'^take/(?P<questionnaire_id>[0-9]+)/$', 'questionnaire.views.generate_run'),
-        url(r'^$', 'questionnaire.page.views.page', {'page_to_render' : 'index'}),
-        url(r'^(?P<lang>..)/(?P<page_to_trans>.*)\.html$', 'questionnaire.page.views.langpage'),
-        url(r'^(?P<page_to_render>.*)\.html$', 'questionnaire.page.views.page'),
-        url(r'^setlang/$', 'questionnaire.views.set_language'),
-    )
+        url(r'^take/(?P<questionnaire_id>[0-9]+)/$', generate_run, name='generate_run'),
+        url(r'^$', page, {'page_to_render' : 'index'}, name='page'),
+        url(r'^(?P<lang>..)/(?P<page_to_trans>.*)\.html$', langpage, name='langpage'),
+        url(r'^(?P<page_to_render>.*)\.html$', page, name='page'),
+        url(r'^setlang/$', set_language, name='set_language'),
+    ]
 
 Having done that we can initialize our database. (For this to work you must have setup your DATABASES in `settings.py`.). First, in your CLI navigate back to the `mysite` folder:
 
@@ -158,7 +160,8 @@ Having done that we can initialize our database. (For this to work you must have
 
 The check that you are in the proper folder, type `ls`: if you can see `manage.py` in your list of files, you are good. Otherwise, find your way to the folder that contains that file. Then type:
 
-    python manage.py syncdb
+    python manage.py makemigrations page
+    python manage.py makemigrations
     python manage.py migrate
 
 The questionnaire expects a `base.html` template to be there, with certain stylesheets and blocks inside. Have a look at `./apps/ed-questionnaire/example/templates/base.html`.
@@ -168,6 +171,7 @@ For now you might want to just copy the `base.html` to your own template folder.
     mkdir templates
     cd templates
     cp ../apps/ed-questionnaire/example/templates/base.html .
+    cd ..
 
 Congratulations, you have setup the basics of the questionnaire! At this point this site doesn't really do anything, as there are no questionnaires defined.
 
