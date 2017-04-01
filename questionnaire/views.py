@@ -743,56 +743,22 @@ def export_csv(request, qid):  # questionnaire_id
     For a given questionnaire id, generaete a CSV containing all the
     answers for all subjects.
     """
-    import tempfile, csv, cStringIO, codecs
+    import tempfile, unicodecsv, cStringIO, codecs
     from django.core.servers.basehttp import FileWrapper
-
-    class UnicodeWriter:
-        """
-        COPIED from http://docs.python.org/library/csv.html example:
-
-        A CSV writer which will write rows to CSV file "f",
-        which is encoded in the given encoding.
-        """
-
-        def __init__(self, f, dialect=csv.excel, encoding="utf-8", **kwds):
-            # Redirect output to a queue
-            self.queue = cStringIO.StringIO()
-            self.writer = csv.writer(self.queue, dialect=dialect, **kwds)
-            self.stream = f
-            self.encoder = codecs.getincrementalencoder(encoding)()
-
-        def writerow(self, row):
-            self.writer.writerow([unicode(s).encode("utf-8") for s in row])
-            # Fetch UTF-8 output from the queue ...
-            data = self.queue.getvalue()
-            data = data.decode("utf-8")
-            # ... and reencode it into the target encoding
-            data = self.encoder.encode(data)
-            # write to the target stream
-            self.stream.write(data)
-            # empty queue
-            self.queue.truncate(0)
-
-        def writerows(self, rows):
-            for row in rows:
-                self.writerow(row)
-
-    fd = tempfile.TemporaryFile()
 
     questionnaire = get_object_or_404(Questionnaire, pk=int(qid))
     headings, answers = answer_export(questionnaire)
 
-    writer = UnicodeWriter(fd)
+    response = HttpResponse(content_type="text/csv")
+
+    writer = unicodecsv.writer(response)
     writer.writerow([u'subject', u'runid'] + headings)
     for subject, runid, answer_row in answers:
         row = ["%s/%s" % (subject.id, subject.state), runid] + [
             a if a else '--' for a in answer_row]
         writer.writerow(row)
 
-    response = HttpResponse(FileWrapper(fd), content_type="text/csv")
-    response['Content-Length'] = fd.tell()
     response['Content-Disposition'] = 'attachment; filename="export-%s.csv"' % qid
-    fd.seek(0)
     return response
 
 
