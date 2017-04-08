@@ -54,9 +54,9 @@ Activate your virtual environment
 
     source bin/activate
 
-Install Django and other dependencies
+Install Django 1.10 and other dependencies
 
-    pip install django unicodecsv
+    pip install "Django>=1.10.0,<1.10.99" unicodecsv
 
 Create your Django site
 
@@ -105,12 +105,12 @@ In the same file add the questionnaire static directory to your STATICFILES_DIRS
     os.path.abspath('./apps/ed-questionnaire/questionnaire/static/'),
     )
 
+Change MIDDLEWARE to MIDDLEWARE_CLASSES.
+
 Also add the locale and request cache middleware to MIDDLEWARE_CLASSES:
 
     'django.middleware.locale.LocaleMiddleware',
     'questionnaire.request_cache.RequestCacheMiddleware',
-
-Change MIDDLEWARE to MIDDLEWARE_CLASSES
 
 If you are using Django 1.7 you will need to comment out the following line, like so:
     # 'django.middleware.security.SecurityMiddleware',
@@ -165,6 +165,8 @@ The check that you are in the proper folder, type `ls`: if you can see `manage.p
     python manage.py makemigrations page   # sometimes this seemed to need a specific call
     python manage.py migrate
 ```
+
+The `makemigrations` command above should create extra columns for each of the LANGUAGES you defined in settings.py (via `django-neue-transmeta`).
 
 The questionnaire expects a `base.html` template to be there, with certain stylesheets and blocks inside. Have a look at `./apps/ed-questionnaire/example/templates/base.html`.
 
