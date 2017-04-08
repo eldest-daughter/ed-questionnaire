@@ -6,7 +6,7 @@ class Page(models.Model):
     __metaclass__ = TransMeta
 
     slug = models.SlugField(unique=True, primary_key=True)
-    title = models.CharField(u"Title", max_length=255)
+    title = models.CharField(u"Title", max_length=256)
     body = models.TextField(u"Body")
     public = models.BooleanField(default=True)
 
