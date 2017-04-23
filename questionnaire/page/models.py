@@ -14,8 +14,7 @@ class Page(models.Model):
         return u"Page[%s]" % self.slug
 
     def get_absolute_url(self):
-        return reverse('questionnaire.page.views.page', kwargs={'page_to_render':self.slug})
+        return reverse('page.views.page', kwargs={'page_to_render':self.slug})
         
-
     class Meta:
         translate = ('title','body',)

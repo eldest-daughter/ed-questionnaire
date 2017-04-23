@@ -5,7 +5,7 @@ from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.core.cache import cache
 from django.contrib.auth.decorators import permission_required
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.db import transaction
 from django.conf import settings
 from datetime import datetime
@@ -43,7 +43,7 @@ except AttributeError:
 def r2r(tpl, request, **contextdict):
     "Shortcut to use RequestContext instead of Context in templates"
     contextdict['request'] = request
-    return render_to_response(tpl, contextdict, context_instance=RequestContext(request))
+    return render(request, tpl, contextdict)
 
 
 def get_runinfo(random):
@@ -744,7 +744,6 @@ def export_csv(request, qid):  # questionnaire_id
     answers for all subjects.
     """
     import tempfile, unicodecsv, cStringIO, codecs
-    from django.core.servers.basehttp import FileWrapper
 
     questionnaire = get_object_or_404(Questionnaire, pk=int(qid))
     headings, answers = answer_export(questionnaire)
