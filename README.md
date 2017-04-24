@@ -136,23 +136,28 @@ Next up we want to edit the `urls.py` file of your project to link the questionn
 
 For an empty site with enabled admin interface you add:
 
-    from django.conf.urls import include, url
+```
+from django.conf.urls import include, url
+from django.contrib import admin
 
-    from django.contrib import admin
-    admin.autodiscover()
+from questionnaire.views import generate_run, set_language
+from questionnaire.page.views import page, langpage
 
-    urlpatterns = [
-        url(r'^admin/', include(admin.site.urls)),
-        
-        # questionnaire urls
-        url(r'q/', include('questionnaire.urls')),
-        
-        url(r'^take/(?P<questionnaire_id>[0-9]+)/$', generate_run, name='generate_run'),
-        url(r'^$', page, {'page_to_render' : 'index'}, name='page'),
-        url(r'^(?P<lang>..)/(?P<page_to_trans>.*)\.html$', langpage, name='langpage'),
-        url(r'^(?P<page_to_render>.*)\.html$', page, name='page'),
-        url(r'^setlang/$', set_language, name='set_language'),
-    ]
+admin.autodiscover()
+
+urlpatterns = [
+    url(r'^admin/', include(admin.site.urls)),
+
+    # questionnaire urls
+    url(r'q/', include('questionnaire.urls')),
+
+    url(r'^take/(?P<questionnaire_id>[0-9]+)/$', generate_run, name='generate_run'),
+    url(r'^$', page, {'page_to_render' : 'index'}, name='page'),
+    url(r'^(?P<lang>..)/(?P<page_to_trans>.*)\.html$', langpage, name='langpage'),
+    url(r'^(?P<page_to_render>.*)\.html$', page, name='page'),
+    url(r'^setlang/$', set_language, name='set_language'),
+]
+```
 
 Having done that we can initialize our database. (For this to work you must have setup your DATABASES in `settings.py`.). First, in your CLI navigate back to the `mysite` folder:
 
