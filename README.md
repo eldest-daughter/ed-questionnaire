@@ -1,6 +1,10 @@
 ED Questionnaire
 =====================
 
+Current Status
+------------
+This project is no longer being actively maintained. I will merge non-conflicting PRs, but otherwise consider this project sunset.
+
 Introduction
 ------------
 
